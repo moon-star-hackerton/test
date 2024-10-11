@@ -1,7 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import { SerialPort } from 'serialport';
 
-function App() {
+async function App() {
+  if ("serial" in navigator) {
+    const port = navigator.serial.requestPort();
+    await port.open({baudRate: 9600});
+
+    const reader = port.readable.getReader();
+    const it = await reader.read();
+    console.log('value', it);
+  } else {
+    console.log('답없다 포기하자');
+  }
+
   return (
     <div className="App">
       <header className="App-header">
